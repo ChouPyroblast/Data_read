@@ -93,7 +93,7 @@ def read_file(path):
                     stack[-1][name] = None
                 else:
                     name = words[0]
-                    value = is_float("".join(words[1:]))
+                    value = is_float(" ".join(words[1:]))
                     stack[-1][name] = value
 
     return alignment, expt
