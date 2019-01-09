@@ -156,7 +156,6 @@ def read_file_flat(path):
                     name = words[0]
                     value = is_float(" ".join(words[1:]))
                     df[name] = value
-
     return df
 
 
@@ -174,13 +173,40 @@ def read_dir(dir):
     return array
 
 
+def read_dir_flat(dir):
+    """
+    :param dir:
+    :return: array of instance of Alignment and Expt
+
+    str -> [(alignment,expt)]
+    """
+    array = []
+    for path in os.listdir(dir):
+        array.append(read_file_flat(os.path.join(dir, path)))
+    return array
+
+
 def read_all(dir):
     for path in os.listdir(dir):
         yield read_dir(os.path.join(dir, path))
 
 
+def read_all_flat(dir):
+    """
+    :param dir:
+    :return: array of all data
+    """
+    array = []
+    for path in os.listdir(dir):
+        array.extend(read_dir_flat(os.path.join(dir, path)))
+    return array
+
+
 if __name__ == "__main__":
-    item = read_file_flat("/home/yl2404/alignmentStatFiles/ANU3_Testing/5mm_Berea_Standard")
+    #item = read_file_flat("/home/yl2404/alignmentStatFiles/ANU3_Testing/5mm_Berea_Standard")
+    #for i in item:
+        #print(i,item[i])
+    #print(len(item))
+    item = read_all_flat("/home/yl2404/alignmentStatFiles/")
     for i in item:
-        print(i,item[i])
-    print(len(item))
+        print(i)
