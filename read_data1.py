@@ -5,6 +5,7 @@ u6013787@anu.edu.au
 
 """
 import os
+import pandas
 
 EXPT = "expt.in"  # name of expt file
 ALIGNMENTPARMVALS = "AlignmentParmVals.dat" # name of AF file
@@ -178,7 +179,8 @@ def read_dir_flat(dir):
     :param dir:
     :return: array of instance of Alignment and Expt
 
-    str -> [(alignment,expt)]
+    This funciton is used to produce .csv file
+    str -> [dict]
     """
     array = []
     for path in os.listdir(dir):
@@ -195,6 +197,7 @@ def read_all_flat(dir):
     """
     :param dir:
     :return: array of all data
+    This funciton is used to produce .csv file
     """
     array = []
     for path in os.listdir(dir):
