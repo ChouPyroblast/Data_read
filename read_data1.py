@@ -99,6 +99,68 @@ def read_file(path):
     return alignment, expt
 
 
+def read_file_flat(path):
+
+    """
+    :param path: the path of file AlignmentParmVals.dat and expt.in
+    :return: dictionary of AF and Expt. Put them together
+
+    path -> dict
+    """
+
+    expt_file = os.path.join(path, EXPT)
+    alignmentparmvals_file = os.path.join(path, ALIGNMENTPARMVALS)
+
+    df = {}
+
+    # read AF
+    if os.path.isfile(alignmentparmvals_file):  # if file exists
+        with open(alignmentparmvals_file, "r") as f:
+            for line in f:
+                words = line.replace("\t", " ").split(": ")  # split the key and value
+                name = "AF."+words[0]
+                value = is_float(words[1][:-1])
+                df[name] = value
+
+    # read Expt
+
+    if os.path.isfile(expt_file):
+        with open(expt_file, "r", errors='replace') as f:
+            multi_string = False
+            name = None
+            for line in f:
+                if line == "\n":
+                    continue
+                if "BeginSection" in line:
+                    continue
+                if "EndSection" in line:
+                    continue
+                if "__start_multi_string__" in line:
+                    multi_string = True
+                    name = line.split()[0]
+                    df[name] = ""
+                    continue
+                if "__end_multi_string__" in line:
+                    multi_string = False
+                    continue
+                if multi_string:
+                    df[name] += line
+                    continue
+
+                words = line.replace("\t", " ").split()
+
+                if len(words) == 1:
+                    name = words[0]
+                    df[name] = None
+                else:
+                    name = words[0]
+                    value = is_float(" ".join(words[1:]))
+                    df[name] = value
+
+    return df
+
+
+
 def read_dir(dir):
     """
     :param dir:
@@ -118,12 +180,7 @@ def read_all(dir):
 
 
 if __name__ == "__main__":
-    ge = read_all("/home/yl2404/alignmentStatFiles/")
-    #for items in ge:
-        #for item in items:
-            #print(item)
-    item = read_file("/home/yl2404/alignmentStatFiles/ANU3_Testing/5mm_Berea_Standard")
-    print(item[0])
-    for i in item[1]:
-        print(i,item[1][i])
-    print(len(item[1]))
+    item = read_file_flat("/home/yl2404/alignmentStatFiles/ANU3_Testing/5mm_Berea_Standard")
+    for i in item:
+        print(i,item[i])
+    print(len(item))
