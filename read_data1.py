@@ -151,8 +151,7 @@ def read_file_flat(path):
                 words = line.replace("\t", " ").split()
 
                 if len(words) == 1:
-                    name = words[0]
-                    df[name] = None
+                    pass
                 else:
                     name = words[0]
                     value = is_float(" ".join(words[1:]))
