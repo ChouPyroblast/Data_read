@@ -205,6 +205,7 @@ def read_all_flat(dir):
 
 
 if __name__ == "__main__":
+
     #item = read_file_flat("/home/yl2404/alignmentStatFiles/ANU3_Testing/5mm_Berea_Standard")
     #for i in item:
         #print(i,item[i])

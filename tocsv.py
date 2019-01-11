@@ -5,8 +5,20 @@
 
 import read_data
 import pandas as pd
+import argparse
+pd.options.mode.chained_assignment = None
+parser = argparse.ArgumentParser(description = "output necessary data as .csv file")
 
-array = read_data.read_all_flat("/home/yl2404/alignmentStatFiles/")
+parser.add_argument("--expt",default = "expt.in",help = "name of expt file")
+parser.add_argument("--af",default = "AlignmentParmVals.dat",help = "name of Af file")
+parser.add_argument("--Path",help="Path of the folder")
+
+args = parser.parse_args()
+
+read_data.EXPT= args.expt
+read_data.ALIGNMENTPARMVALS= args.af
+
+array = read_data.read_all_flat(args.Path)
 
 df = pd.DataFrame(array)
 
@@ -85,10 +97,8 @@ for i in range(len(Diff_parameter)):
     sorted_columns.append(EXPT_parameter[i])
     sorted_columns.append(AF_parameter[i])
     sorted_columns.append(name)
-    
-    
 
-selected_df["AF.vxsize"] = selected_df["pixel_size_x"] * selected_df["AF.specimen_distance" ]/ selected_df["AF.camera_length"]
+selected_df ["AF.vxsize"] = 1000 * selected_df["pixel_size_x"] * selected_df["AF.specimen_distance" ]/ selected_df["AF.camera_length"]
 selected_df["vxsize error"] =  1 - selected_df["AF.vxsize"] / selected_df["voxel_size"]
 sorted_columns.append("voxel_size")
 sorted_columns.append("AF.vxsize")
