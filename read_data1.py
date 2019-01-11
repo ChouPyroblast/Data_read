@@ -115,7 +115,7 @@ def read_file_flat(path):
     df = {}
 
     # read AF
-    if os.path.isfile(alignmentparmvals_file):  # if file exists
+    if os.path.isfile(alignmentparmvals_file) and os.path.isfile(expt_file):  # if file exists
         with open(alignmentparmvals_file, "r") as f:
             for line in f:
                 words = line.replace("\t", " ").split(": ")  # split the key and value
@@ -123,9 +123,8 @@ def read_file_flat(path):
                 value = is_float(words[1][:-1])
                 df[name] = value
 
-    # read Expt
+        # read Expt
 
-    if os.path.isfile(expt_file):
         with open(expt_file, "r", errors='replace') as f:
             multi_string = False
             name = None
@@ -182,7 +181,9 @@ def read_dir_flat(dir):
     """
     array = []
     for path in os.listdir(dir):
-        array.append(read_file_flat(os.path.join(dir, path)))
+        dic = read_file_flat(os.path.join(dir, path))
+        if len(dic) > 0:
+            array.append(dic)
     return array
 
 
@@ -207,7 +208,8 @@ if __name__ == "__main__":
     #item = read_file_flat("/home/yl2404/alignmentStatFiles/ANU3_Testing/5mm_Berea_Standard")
     #for i in item:
         #print(i,item[i])
+
     #print(len(item))
     item = read_all_flat("/home/yl2404/alignmentStatFiles/")
-    for i in item:
-        print(i)
+    #for i in item:
+        #print(i)
