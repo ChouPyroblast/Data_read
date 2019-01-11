@@ -3,7 +3,7 @@
 
 # In[10]:
 
-import read_data1
+import read_data
 import pandas as pd
 
 array = read_data1.read_all_flat("/home/yl2404/alignmentStatFiles/")
